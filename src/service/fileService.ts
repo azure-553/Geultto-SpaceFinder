@@ -12,40 +12,37 @@ export function saveTextFiles(
 }
 
 export function saveAllTextFile(folderPath: string, allEventData: object[]) {
-  let eventTextContent = "# 작업공간찾았또 공간 정보\n\n";
+  let spaceTextContent = "";
 
-  allEventData.forEach((eventData, index) => {
-    eventTextContent += `## Row ${index + 1}\n`;
+  allEventData.forEach((spaceData) => {
+    const spaceName = spaceData["Space Name"] || "알 수 없는 공간";
 
-    const desiredOrder = [
-      "Space Name",
-      "Created Date",
-      "Last Modified Date",
-      "Location URL",
-      "Review URL",
-      "Source URL",
-    ];
+    spaceTextContent += `## ${spaceName}\n`;
 
-    const urlMappings: { [key: string]: string } = {
-      "Location URL": "📍 위치",
-      "Review URL": "📝 리뷰",
-      "Source URL": "🔗 출처",
+    const desiredOrder: { [key: string]: string } = {
+      "Created Date": "생성 날짜",
+      "Last Modified Date": "최근 수정 날짜",
     };
 
-    desiredOrder.forEach((key) => {
-      if (eventData[key]) {
-        let value = eventData[key];
+    Object.entries(desiredOrder).forEach(([key, label]) => {
+      if (spaceData[key]) {
+        let value = spaceData[key];
 
-        if (key.includes("URL")) {
-          value = `[${urlMappings[key] || key}](${value})`;
-        }
+        value = value.slice(2, 10);
 
-        eventTextContent += `- ${key}: ${value}\n`;
+        spaceTextContent += `- ${label}: ${value}\n`;
       }
     });
 
-    eventTextContent += "\n---\n\n";
+    if (spaceData["Location URL"]) {
+      spaceTextContent += `- [📍 위치](${spaceData["Location URL"]})\n`;
+    }
+    if (spaceData["Source URL"]) {
+      spaceTextContent += `- [🔗 출처](${spaceData["Source URL"]})\n`;
+    }
+
+    spaceTextContent += "\n---\n\n";
   });
 
-  saveTextFiles(folderPath, "README.md", eventTextContent);
+  saveTextFiles(folderPath, "README.md", spaceTextContent);
 }
