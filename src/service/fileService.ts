@@ -24,6 +24,13 @@ export function saveAllTextFile(folderPath: string, allEventData: object[]) {
       "Last Modified Date": "최근 수정 날짜",
     };
 
+    if (spaceData["Location URL"]) {
+      spaceTextContent += `- [📍 위치](${spaceData["Location URL"]})\n`;
+    }
+    if (spaceData["Source URL"]) {
+      spaceTextContent += `- [🔗 출처](${spaceData["Source URL"]})\n`;
+    }
+
     Object.entries(desiredOrder).forEach(([key, label]) => {
       if (spaceData[key]) {
         let value = spaceData[key];
@@ -33,13 +40,6 @@ export function saveAllTextFile(folderPath: string, allEventData: object[]) {
         spaceTextContent += `- ${label}: ${value}\n`;
       }
     });
-
-    if (spaceData["Location URL"]) {
-      spaceTextContent += `- [📍 위치](${spaceData["Location URL"]})\n`;
-    }
-    if (spaceData["Source URL"]) {
-      spaceTextContent += `- [🔗 출처](${spaceData["Source URL"]})\n`;
-    }
 
     spaceTextContent += "\n---\n\n";
   });
