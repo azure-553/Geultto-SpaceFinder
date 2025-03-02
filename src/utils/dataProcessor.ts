@@ -1,11 +1,13 @@
 import { PageObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 
 export function extractPageData(page: PageObjectResponse) {
-  let location = "notion_data";
+  let spaceLocation = "notion_data";
   let spaceData: { [key: string]: string } = {};
+  let winnerData: { [key: string]: string } = {};
 
   Object.entries(page.properties).forEach(([key, value]) => {
     let output = "";
+
     switch (value.type) {
       case "title":
         output = value.title.map((item) => item.plain_text).join(" ");
@@ -37,16 +39,22 @@ export function extractPageData(page: PageObjectResponse) {
       case "phone_number":
         output = value.phone_number ?? "";
         break;
+      case "created_time":
+        output = page.created_time;
+        break;
+      case "last_edited_time":
+        output = page.last_edited_time;
+        break;
       default:
         output = `[${value.type} 데이터]`;
     }
 
     if (key === "Location" && output) {
-      location = output.replace(/[^a-zA-Z0-9가-힣 ]/g, "");
+      spaceLocation = output.replace(/[^a-zA-Z0-9가-힣 ]/g, "");
     }
 
     spaceData[key] = output;
   });
 
-  return { location, spaceData };
+  return { spaceLocation, spaceData, winnerData };
 }
