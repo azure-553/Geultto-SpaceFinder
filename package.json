@@ -12,5 +12,11 @@
   "devDependencies": {
     "@types/node": "^22.13.8",
     "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "@notionhq/client": "^2.2.16",
+    "@octokit/rest": "^21.1.1",
+    "axios": "^1.8.1",
+    "dotenv": "^16.4.7"
   }
 }
