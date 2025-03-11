@@ -3,7 +3,6 @@ import { PageObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 export function extractPageData(page: PageObjectResponse) {
   let spaceLocation = "notion_data";
   let spaceData: { [key: string]: string } = {};
-  let winnerData: { [key: string]: string } = {};
 
   Object.entries(page.properties).forEach(([key, value]) => {
     let output = "";
@@ -56,5 +55,5 @@ export function extractPageData(page: PageObjectResponse) {
     spaceData[key] = output;
   });
 
-  return { spaceLocation, spaceData, winnerData };
+  return { spaceLocation, spaceData };
 }

@@ -12,7 +12,7 @@ async function fetchNotionData(): Promise<void> {
     } = {};
 
     pages.forEach((page) => {
-      const { spaceLocation, spaceData, winnerData } = extractPageData(page);
+      const { spaceLocation, spaceData } = extractPageData(page);
 
       const folderPath = path.join(__dirname, `../${spaceLocation}`);
       if (!fs.existsSync(folderPath)) {
@@ -24,7 +24,6 @@ async function fetchNotionData(): Promise<void> {
         programData[spaceLocation] = { allSpaceData: [], allWinnerData: [] };
       }
       programData[spaceLocation].allSpaceData.push(spaceData);
-      programData[spaceLocation].allWinnerData.push(winnerData);
     });
 
     Object.entries(programData).forEach(([spaceLocation, { allSpaceData }]) => {
