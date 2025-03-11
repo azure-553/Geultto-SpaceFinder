@@ -7,8 +7,8 @@ import * as path from "path";
 async function fetchNotionData(): Promise<void> {
   try {
     const pages = await fetchNotionPages();
-    let programData: {
-      [key: string]: { allSpaceData: object[]; allWinnerData: object[] };
+    let data: {
+      [key: string]: { allSpaceData: object[] };
     } = {};
 
     pages.forEach((page) => {
@@ -20,13 +20,13 @@ async function fetchNotionData(): Promise<void> {
         console.log(`폴더 생성 완료: ${folderPath}`);
       }
 
-      if (!programData[spaceLocation]) {
-        programData[spaceLocation] = { allSpaceData: [], allWinnerData: [] };
+      if (!data[spaceLocation]) {
+        data[spaceLocation] = { allSpaceData: [] };
       }
-      programData[spaceLocation].allSpaceData.push(spaceData);
+      data[spaceLocation].allSpaceData.push(spaceData);
     });
 
-    Object.entries(programData).forEach(([spaceLocation, { allSpaceData }]) => {
+    Object.entries(data).forEach(([spaceLocation, { allSpaceData }]) => {
       const folderPath = path.join(__dirname, `../${spaceLocation}`);
       saveAllTextFile(folderPath, allSpaceData);
     });
